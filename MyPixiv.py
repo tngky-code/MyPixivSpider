@@ -74,6 +74,9 @@ class MyPixiv:
                 self.illust_id_list.remove(illust_id)
         print(self.illust_id_list)
 
+    def get_illusts_by_user_id(self):
+        pass
+
     def multi_get_illust(self,illust_id_list,max=20):
         get_illust_id_queue=Queue(maxsize=max)
         threads=[]
