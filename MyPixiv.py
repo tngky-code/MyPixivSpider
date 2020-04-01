@@ -58,7 +58,6 @@ class MyPixiv:
         #ranking_url='https://www.pixiv.net/ranking.php?mode=male_r18&p={}'.format(page) #男R18插画
         ranking_url='https://www.pixiv.net/ranking.php?mode=weekly_r18&content=illust&p={}'.format(page) #本周周R18插画
         #ranking_url='https://www.pixiv.net/ranking.php?mode=daily_r18&content=illust&p={}'.format(page) #本周周R18插画
-        print("hello")
         r=self.get_response(ranking_url,self.defaultheader)
         HTML=etree.HTML(r.text)
         illust_url_temp_list=HTML.xpath('//img/@data-src')
