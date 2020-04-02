@@ -79,17 +79,17 @@ class MyPixiv:
             file_list=file_list+file
         return file_list
 
-    def get_illusts_by_user_id(self,user_id):
-        self.folder=os.path.join(self.folder,str(user_id))
-        self.illust_id_list = get_illust_id_list_by_user_id(user_id)
-        self.check_folder_and_illust()
-        self.multi_get_illust(self.illust_id_list)
-
     def get_illust_id_list_by_user_id(self,user_id):
         user_profile_ajax_url = "https://www.pixiv.net/ajax/user/{}/profile/all".format(str(user_id))
         page = self.get_response(user_profile_ajax_url,self.defaultheader)
         _data = re.findall('"[0-9]+":null', page.text)
         return [str(str(item).split(":")[0]).strip('"') for item in _data if ':null' in str(item)]
+
+    def get_illusts_by_user_id(self,user_id):
+        self.folder=os.path.join(self.folder,str(user_id))
+        self.illust_id_list = self.get_illust_id_list_by_user_id(user_id)
+        self.check_folder_and_illust()
+        self.multi_get_illust(self.illust_id_list)
 
     def multi_get_illust(self,illust_id_list,max=20):
         get_illust_id_queue=Queue(maxsize=max)
@@ -154,7 +154,9 @@ class MyPixiv:
 
 if __name__ == '__main__':
     p=MyPixiv()
-    p.get_ranking_illust()
+    #p.get_ranking_illust()
+    p.get_illusts_by_user_id(9212166)
+
     #print(p.get_illust_id(mode=1,content=1)+p.get_illust_id(mode=1,content=1,page=2))
     #print(len(p.get_illust_id(mode=1,content=1)+p.get_illust_id(mode=1,content=1,page=2)))
 
