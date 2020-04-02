@@ -27,6 +27,37 @@ class MyPixiv:
         self.illust_id_list=[]
         self.num = 0
         self.now=str(datetime.now()).split(' ')[0]
+        self.ranking_modes=["daily","weekly","monthly","daily_r18","weekly_r18","male_r18"]
+
+    def get_ranking_illust(self,mode=0,illust_num=100):
+        daily_folder=self.ranking_modes[mode]+"_illust"+'_'+self.now+'_'+str(illust_num)
+        self.folder=os.path.join(self.folder,daily_folder)
+        for i in range(math.ceil(illust_num/50)):
+            self.illust_id_list+=self.get_illust_id(mode=mode,page=i+1)
+        self.check_folder_and_illust()
+        self.multi_get_illust(self.illust_id_list)
+
+    def get_illusts_by_user_id(self,user_id):
+        self.folder=os.path.join(self.folder,str(user_id))
+        self.illust_id_list = self.get_illust_id_list_by_user_id(user_id)
+        self.check_folder_and_illust()
+        self.multi_get_illust(self.illust_id_list)
+
+    def get_illust_id(self,mode=0,page=1):
+        if self.ranking_modes[mode] == "male_r18" :
+            ranking_url='https://www.pixiv.net/ranking.php?mode=male_r18&p={}'.format(page)
+        else:
+            ranking_url='https://www.pixiv.net/ranking.php?mode={}&content=illust&p={}'.format(self.ranking_modes[mode],page) #本周R18插画
+        r=self.get_response(ranking_url,self.defaultheader)
+        HTML=etree.HTML(r.text)
+        illust_url_temp_list=HTML.xpath('//img/@data-src')
+        return [item.split('/')[-1].split('_')[0] for item in illust_url_temp_list]
+
+    def get_illust_id_list_by_user_id(self,user_id):
+        user_profile_ajax_url = "https://www.pixiv.net/ajax/user/{}/profile/all".format(str(user_id))
+        page = self.get_response(user_profile_ajax_url,self.defaultheader)
+        _data = re.findall('"[0-9]+":null', page.text)
+        return [str(str(item).split(":")[0]).strip('"') for item in _data if ':null' in str(item)]
 
     def get_response(self,url,headers,is_byte=False):
         r=requests.get(url,verify=False,headers=headers)
@@ -37,31 +68,6 @@ class MyPixiv:
                 time.sleep(1)
                 r=requests.get(url,verify=False,headers=headers)
         return r
-
-    def get_ranking_illust(self,mode=0,content=0,illust_num=100):
-        #daily_folder="daily_illust"+'_'+self.now+'_'+str(illust_num)
-        #daily_folder="weekly_illust"+'_'+self.now+'_'+str(illust_num)
-        #daily_folder="monthly_illust"+'_'+str(illust_num)
-        #daily_folder="male_r18_illust"+'_'+str(illust_num)
-        #daily_folder="weekly_r18_illust"+'_'+str(illust_num)
-        daily_folder="daily_r18_illust"+'_'+self.now+'_'+str(illust_num)
-        self.folder=os.path.join(self.folder,daily_folder)
-        for i in range(math.ceil(illust_num/50)):
-            self.illust_id_list+=self.get_illust_id(page=i+1)
-        self.check_folder_and_illust()
-        self.multi_get_illust(self.illust_id_list)
-        
-    def get_illust_id(self,mode=0,content=0,page=1):
-        #ranking_url='https://www.pixiv.net/ranking.php?mode=monthly&content=illust&p={}'.format(page) #本月插画
-        #ranking_url='https://www.pixiv.net/ranking.php?mode=daily&content=illust&p={}'.format(page) #本日插画
-        #ranking_url='https://www.pixiv.net/ranking.php?mode=weekly&content=illust&p={}'.format(page) #本周插画
-        #ranking_url='https://www.pixiv.net/ranking.php?mode=male_r18&p={}'.format(page) #男R18插画
-        #ranking_url='https://www.pixiv.net/ranking.php?mode=weekly_r18&content=illust&p={}'.format(page) #本周R18插画
-        ranking_url='https://www.pixiv.net/ranking.php?mode=daily_r18&content=illust&p={}'.format(page) #本日R18插画
-        r=self.get_response(ranking_url,self.defaultheader)
-        HTML=etree.HTML(r.text)
-        illust_url_temp_list=HTML.xpath('//img/@data-src')
-        return [item.split('/')[-1].split('_')[0] for item in illust_url_temp_list]
 
     def check_folder_and_illust(self):
         loacl_illust_path="D:\MyFiles\Pictures\myillust"
@@ -78,18 +84,6 @@ class MyPixiv:
         for file in [[file.split('_')[1] for file in files if '_' in file] for root,dirs,files in os.walk(path)]:
             file_list=file_list+file
         return file_list
-
-    def get_illust_id_list_by_user_id(self,user_id):
-        user_profile_ajax_url = "https://www.pixiv.net/ajax/user/{}/profile/all".format(str(user_id))
-        page = self.get_response(user_profile_ajax_url,self.defaultheader)
-        _data = re.findall('"[0-9]+":null', page.text)
-        return [str(str(item).split(":")[0]).strip('"') for item in _data if ':null' in str(item)]
-
-    def get_illusts_by_user_id(self,user_id):
-        self.folder=os.path.join(self.folder,str(user_id))
-        self.illust_id_list = self.get_illust_id_list_by_user_id(user_id)
-        self.check_folder_and_illust()
-        self.multi_get_illust(self.illust_id_list)
 
     def multi_get_illust(self,illust_id_list,max=20):
         get_illust_id_queue=Queue(maxsize=max)
@@ -154,9 +148,8 @@ class MyPixiv:
 
 if __name__ == '__main__':
     p=MyPixiv()
-    #p.get_ranking_illust()
-    p.get_illusts_by_user_id(9212166)
+    #self.ranking_modes=["daily","weekly","monthly","daily_r18","weekly_r18","male_r18"]
+    p.get_ranking_illust(mode=2)
+    #p.get_illusts_by_user_id(9212166)
 
-    #print(p.get_illust_id(mode=1,content=1)+p.get_illust_id(mode=1,content=1,page=2))
-    #print(len(p.get_illust_id(mode=1,content=1)+p.get_illust_id(mode=1,content=1,page=2)))
 
