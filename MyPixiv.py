@@ -22,7 +22,7 @@ class MyPixiv:
             "Accept-Language": "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3",
             "Accept-Encoding": "",
             "Connection": "keep-alive",
-            "Cookie":"first_visit_datetime_pc=2019-12-19+21%3A16%3A37; p_ab_id=0; p_ab_id_2=1; p_ab_d_id=881214245; yuid_b=FWMjGHk; _ga=GA1.2.1087647723.1576757808; __utmz=235335808.1578016887.2.2.utmcsr=mail.qq.com|utmccn=(referral)|utmcmd=referral|utmcct=/; a_type=0; b_type=1; login_ever=yes; module_orders_mypage=%5B%7B%22name%22%3A%22sketch_live%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22tag_follow%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22recommended_illusts%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22everyone_new_illusts%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22following_new_illusts%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22mypixiv_new_illusts%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22spotlight%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22fanbox%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22featured_tags%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22contests%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22user_events%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22sensei_courses%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22booth_follow_items%22%2C%22visible%22%3Atrue%7D%5D; ki_r=; __utma=235335808.1087647723.1576757808.1578023672.1578055255.4; __utmv=235335808.|2=login%20ever=yes=1^3=plan=normal=1^5=gender=male=1^6=user_id=46683836=1^9=p_ab_id=0=1^10=p_ab_id_2=1=1^11=lang=zh=1; privacy_policy_agreement=1; _gcl_au=1.1.1653015041.1580380812; r_control_flg=1; _fbp=fb.1.1580380851030.1081795253; rpr_opted_in=1; rpr_uid=09eef720-434d-11ea-9aa6-a9c9887a491e; rpr_is_first_session={%2209eef720-434d-11ea-9aa6-a9c9887a491e%22:1}; PHPSESSID=46650191_xre4dorUT3VOBNkhOGiGtMA5ZxPZcMUm; device_token=7836b37476f21c4be3662fc1590acab4; c_type=24; is_sensei_service_user=1; ki_t=1578016936094%3B1585503148494%3B1585503148494%3B4%3B29; _gid=GA1.2.2078855852.1585503177; tag_view_ranking=_hSAdpN9rx~LJo91uBPz4~RTJMXD26Ak~0xsDLqCEW6~zIv0cf5VVk~t6fkfIQnjP~7WfWkHyQ76~bQoXeIPKKf~ynPLKWGJ1A~m3EJRa33xU~xxn1Q-SAfT~0AlZ2ckzFV~O0WKFZuVbs~ojOWqUhaaT~l-hI-mMchl~XALOkB5ogB~qiGiRRx4e5~OZdc679bTj~BU9SQkS-zU~y8GNntYHsi~HRnhV4P3Qr~jEyj-WOP42~KN7uxuR89w~VJ2-8NDjhH~xZ6jtQjaj9~ugMBP7-Qst~fUbMkuz-EA~pNfuh5ybtG~OSHWvWBpo9~cFYMvUloX0~ZZltVrbyeV~CbhyJ8r4Mo~mHukPa9Swj~1D1VEfvFR5~TBAh5YDdLW~jfnUZgnpFl~t3UPOSEYYz~DHqIUplIEc~rIphCTR6YP~0PNozdwbIq~vo3OX2PTkY~go5jE8nqWm~0J0e27QDgN~UllT3Di21R~xieAY3Zk0r~O1fcKKXBq1~XRVfX4SbmB~dIjQ8RA3xH~6mJb502bSm~UP12ShuBVx~l0PkfZ9vV7~3W4zqr4Xlx~dyJbxIRsK9~ETjPkL0e6r~eASpjB2X6M~EMLHXCKsfZ~5oPIfUbtd6~Ie2c51_4Sp~AMwBN_-Fo_~2-ZLcTJsOe~3EPEM1BGbJ~_fMf86iA_3~HQrKJY4TRh~oq1xLIbBpj~Ru77CoMVRH~ePqY0MNwHR~KZK1KvTPMp~rGFlnffUQd~Yvn1eEKXNf~UR3UZdHtim~5sExEHA8P5~B6uEbiYg7i~CluIvy4vsU~MKnVucuYOn~WM3631l9jF~spPqEvHEF2~1G1bsV2xcg~lJoTN1o2SZ~1MsYTGMqRa~QTp6AjCbvf~yRoNh0Qhm9~FVapwIXT4j~QGRWD70vj2~sQC4pGQx9E~JVFA1XydrI~8WJVvxbZJ2~D6TnwR9Jia~SQZaakhtVv~ATwfQNRWoV~woYIyNhisG; _gat_UA-1830249-3=1"
+            "Cookie":"first_visit_datetime_pc=2019-12-19+21%3A16%3A37; p_ab_id=0; p_ab_id_2=1; p_ab_d_id=881214245; yuid_b=FWMjGHk; _ga=GA1.2.1087647723.1576757808; __utmz=235335808.1578016887.2.2.utmcsr=mail.qq.com|utmccn=(referral)|utmcmd=referral|utmcct=/; a_type=0; b_type=1; login_ever=yes; ki_r=; __utma=235335808.1087647723.1576757808.1578023672.1578055255.4; __utmv=235335808.|2=login%20ever=yes=1^3=plan=normal=1^5=gender=male=1^6=user_id=46683836=1^9=p_ab_id=0=1^10=p_ab_id_2=1=1^11=lang=zh=1; privacy_policy_agreement=1; _gcl_au=1.1.1653015041.1580380812; r_control_flg=1; _fbp=fb.1.1580380851030.1081795253; rpr_opted_in=1; rpr_uid=09eef720-434d-11ea-9aa6-a9c9887a491e; rpr_is_first_session={%2209eef720-434d-11ea-9aa6-a9c9887a491e%22:1}; device_token=7836b37476f21c4be3662fc1590acab4; c_type=24; is_sensei_service_user=1; _gid=GA1.2.729629252.1585909235; tag_view_ranking=_hSAdpN9rx~0xsDLqCEW6~LJo91uBPz4~RTJMXD26Ak~BU9SQkS-zU~q3eUobDMJW~y8GNntYHsi~zIv0cf5VVk~RcahSSzeRf~FqVQndhufZ~t6fkfIQnjP~7WfWkHyQ76~bQoXeIPKKf~ynPLKWGJ1A~m3EJRa33xU~xxn1Q-SAfT~0AlZ2ckzFV~O0WKFZuVbs~ojOWqUhaaT~l-hI-mMchl~XALOkB5ogB~52-15K-YXl~WcTW9TCOx9~5tNe8-14sj~ETjPkL0e6r~eaDKZUabpN~NjPfpD1o9t~yUv36CqH7A~engSCj5XFq~i4xDq8M0zV~yS_WrRrWFi~mhPeEpcp6t~xYzU0doFjn~qiGiRRx4e5~OZdc679bTj~HRnhV4P3Qr~jEyj-WOP42~KN7uxuR89w~VJ2-8NDjhH~xZ6jtQjaj9~ugMBP7-Qst~fUbMkuz-EA~pNfuh5ybtG~OSHWvWBpo9~cFYMvUloX0~ZZltVrbyeV~CbhyJ8r4Mo~mHukPa9Swj~1D1VEfvFR5~TBAh5YDdLW~jfnUZgnpFl~t3UPOSEYYz~DHqIUplIEc~rIphCTR6YP~0PNozdwbIq~vo3OX2PTkY~go5jE8nqWm~0J0e27QDgN~ie0shhAARr~Sbp1gmMeRy~gooMLQqB9a~9V46Zz_N_N~0Sds1vVNKR~JN2fNJ_Ue2~oMYuHRGe9g~mir4aNx9oM~4D-QY0hPsZ~QaiOjmwQnI~TALRqPdJaG~McuMpY73VJ~FhRjOaU1Yv~JPMKh5CRaK~H8cy1mILiB~skx_-I2o4Y~Dd2BFtvC_a~AI_aJCDFn0~TmJBC3K3bw~duocPQtNzV~-MuiEJf_Sr~UFjxr4OIYz~6293srEnwa~tKWyFlqScc~QL2G1t5h_V~AZ1ov2QNRs~EUwzYuPRbU~MzyhgX0YIu~u8McsBs7WV~k6ivnrAmsH~qBVGbZbpq5~ujS7cIBGO-~_3oeEue7S7~pnFCwAsnT2~orHGhUVIu0~TWrozby2UO~Lpw_C4vO0A~jrclGyQTmB~CZnOKinv48~VYDUiRsHt2~OBJrLjuGCM~CSLXxI4q2n; module_orders_mypage=%5B%7B%22name%22%3A%22recommended_illusts%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22sketch_live%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22tag_follow%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22everyone_new_illusts%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22following_new_illusts%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22mypixiv_new_illusts%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22spotlight%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22fanbox%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22featured_tags%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22contests%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22user_events%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22sensei_courses%22%2C%22visible%22%3Atrue%7D%2C%7B%22name%22%3A%22booth_follow_items%22%2C%22visible%22%3Atrue%7D%5D; login_bc=1; PHPSESSID=46650191_4ZN8oQNoBO2dKvOuXBOY1O9END5faaoa; _gat=1; _gat_UA-1830249-138=1; ki_t=1578016936094%3B1585909254947%3B1585915661094%3B7%3B35"
         }
         self.illust_id_list=[]
         self.num = 0
@@ -30,7 +30,7 @@ class MyPixiv:
         self.ranking_modes=["daily","weekly","monthly","daily_r18","weekly_r18","male_r18"]
 
     def get_ranking_illust(self,mode=0,illust_num=100):
-        daily_folder=self.ranking_modes[mode]+"_illust"+'_'+self.now+'_'+str(illust_num)
+        daily_folder=self.now+'_'+self.ranking_modes[mode]+"_illust"+'_'+str(illust_num)
         self.folder=os.path.join(self.folder,daily_folder)
         for i in range(math.ceil(illust_num/50)):
             self.illust_id_list+=self.get_illust_id(mode=mode,page=i+1)
@@ -71,7 +71,8 @@ class MyPixiv:
 
     def check_folder_and_illust(self):
         loacl_illust_path="D:\MyFiles\Pictures\myillust"
-        folder = os.path.join(self.root, self.folder)
+        tfolder= 'PixivIllust'
+        folder = os.path.join(self.root, tfolder)
         existed_file=self.get_local_file_list(folder)+self.get_local_file_list(loacl_illust_path)
         print("Exist Item:", len(existed_file))
         for illust_id in self.illust_id_list.copy():
@@ -149,7 +150,7 @@ class MyPixiv:
 if __name__ == '__main__':
     p=MyPixiv()
     #self.ranking_modes=["daily","weekly","monthly","daily_r18","weekly_r18","male_r18"]
-    p.get_ranking_illust(mode=2)
-    #p.get_illusts_by_user_id(9212166)
+    p.get_ranking_illust(mode=3)
+    #p.get_illusts_by_user_id(24234)
 
 
