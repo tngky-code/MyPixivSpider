@@ -150,7 +150,7 @@ class MyPixiv:
 if __name__ == '__main__':
     p=MyPixiv()
     #self.ranking_modes=["daily","weekly","monthly","daily_r18","weekly_r18","male_r18"]
-    p.get_ranking_illust(mode=3)
-    #p.get_illusts_by_user_id(24234)
+    p.get_ranking_illust(mode=5)
+    #p.get_illusts_by_user_id(691882)
 
 
