@@ -1,20 +1,21 @@
-import requests
-import os
-from lxml import etree
-import re
-import threading
-from queue import Queue
-import urllib3
-import urllib
-import time
 from datetime import datetime
+from lxml import etree
+from queue import Queue
+from tool import InsertIllust
+from tool import SqliteHelper
+import threading
+import requests
+import urllib3
+import time
 import math
+import os
+import re
 
-urllib3.disable_warnings()
 
 class MyPixiv:
     def __init__(self):
         self.folder = 'PixivIllust'
+        self.target_folder = 'PixivIllust'
         self.root = os.path.dirname(os.path.abspath(__file__))
         self.defaultheader = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0",
@@ -28,36 +29,27 @@ class MyPixiv:
         self.num = 0
         self.now=str(datetime.now()).split(' ')[0]
         self.ranking_modes=["daily","weekly","monthly","daily_r18","weekly_r18","male_r18"]
-
+        self.filer_tags=["ゲイ","ホモ","巨根","雄っぱい","犬姦","逆フェラ","ふたなり","獣姦","腐向け","妊娠","ケモホモ","妊婦","服越し母乳"]
+        urllib3.disable_warnings()
+        
     def get_ranking_illust(self,mode=0,illust_num=100):
-        daily_folder=self.now+'_'+self.ranking_modes[mode]+"_illust"+'_'+str(illust_num)
-        self.folder=os.path.join(self.folder,daily_folder)
+        illust_folder=self.now+'_'+self.ranking_modes[self.mode]
+        self.target_folder = os.path.join(self.root, self.folder,illust_folder)
         for i in range(math.ceil(illust_num/50)):
-            self.illust_id_list+=self.get_illust_id(mode=mode,page=i+1)
+            self.illust_id_list+=self.get_ranking_illust_id_list(mode=mode,page=i+1)
+        print(self.illust_id_list)
         self.check_folder_and_illust()
         self.multi_get_illust(self.illust_id_list)
 
-    def get_illusts_by_user_id(self,user_id):
-        self.folder=os.path.join(self.folder,str(user_id))
-        self.illust_id_list = self.get_illust_id_list_by_user_id(user_id)
-        self.check_folder_and_illust()
-        self.multi_get_illust(self.illust_id_list)
-
-    def get_illust_id(self,mode=0,page=1):
+    def get_ranking_illust_id_list(self,mode=0,page=1):
         if self.ranking_modes[mode] == "male_r18" :
             ranking_url='https://www.pixiv.net/ranking.php?mode=male_r18&p={}'.format(page)
         else:
-            ranking_url='https://www.pixiv.net/ranking.php?mode={}&content=illust&p={}'.format(self.ranking_modes[mode],page) #本周R18插画
+            ranking_url='https://www.pixiv.net/ranking.php?mode={}&content=illust&p={}'.format(self.ranking_modes[mode],page) 
         r=self.get_response(ranking_url,self.defaultheader)
         HTML=etree.HTML(r.text)
         illust_url_temp_list=HTML.xpath('//img/@data-src')
         return [item.split('/')[-1].split('_')[0] for item in illust_url_temp_list]
-
-    def get_illust_id_list_by_user_id(self,user_id):
-        user_profile_ajax_url = "https://www.pixiv.net/ajax/user/{}/profile/all".format(str(user_id))
-        page = self.get_response(user_profile_ajax_url,self.defaultheader)
-        _data = re.findall('"[0-9]+":null', page.text)
-        return [str(str(item).split(":")[0]).strip('"') for item in _data if ':null' in str(item)]
 
     def get_response(self,url,headers,is_byte=False):
         r=requests.get(url,verify=False,headers=headers)
@@ -71,20 +63,19 @@ class MyPixiv:
 
     def check_folder_and_illust(self):
         loacl_illust_path="D:\MyFiles\Pictures\myillust"
-        tfolder= 'PixivIllust'
-        folder = os.path.join(self.root, tfolder)
+        folder = os.path.join(self.root, self.folder)
         existed_file=self.get_local_file_list(folder)+self.get_local_file_list(loacl_illust_path)
         print("Exist Item:", len(existed_file))
         for illust_id in self.illust_id_list.copy():
-            if illust_id in existed_file:
+            if illust_id in existed_file or SqliteHelper.SqliteHelper().check_data_exist_by_id(illust_id):
                 self.illust_id_list.remove(illust_id)
         print(self.illust_id_list)
 
     def get_local_file_list(self,path):
-        file_list=[]
-        for file in [[file.split('_')[1] for file in files if '_' in file] for root,dirs,files in os.walk(path)]:
-            file_list=file_list+file
-        return file_list
+        local_file_list=[]
+        for local_file in [[file.split('_')[1] for file in files if '_' in file] for root,dirs,files in os.walk(path)]:
+            local_file_list=local_file_list+local_file
+        return local_file_list
 
     def multi_get_illust(self,illust_id_list,max=20):
         get_illust_id_queue=Queue(maxsize=max)
@@ -111,7 +102,11 @@ class MyPixiv:
             if get_illust_id_queue.qsize()<=0:
                 break
             illust_id = get_illust_id_queue.get()
-            orginal_illust_urls,headers,illust_user_id = self.get_orginal_illust_url_by_id(illust_id)
+            orginal_illust_urls,headers,illust_user_id,tags = self.get_orginal_illust_url_by_id(illust_id)
+            for i in self.filer_tags:
+                if str(i.encode("unicode_escape")).strip('b').strip("'").replace('\\\\','\\') in tags:
+                    self.save_illust_data_by_id(illust_id)
+                    continue
             threads_temp=[]
             for orginal_illust_url in orginal_illust_urls:
                 task = threading.Thread(target=self.save_illust, args=(orginal_illust_url,headers,illust_user_id,))
@@ -120,25 +115,15 @@ class MyPixiv:
             for _task in threads_temp:
                 _task.join()
 
-    def save_illust(self,orginal_illust_url,headers,illust_user_id):
-        illust_html=self.get_response(orginal_illust_url,headers,is_byte=True)
-        name="{}_{}".format(illust_user_id,orginal_illust_url.rsplit('/',-1)[-1])
-        folder = os.path.join(self.root, self.folder)
-        if not os.path.exists(folder):
-            os.makedirs(folder)
-        file = os.path.join(folder, str(name))
-        with open(file,'wb') as ill:
-            ill.write(illust_html.content)
-        print("Pixiv Illust: [ OK | {} ]".format(file))
-
     def get_orginal_illust_url_by_id(self,illust_id):
         headers = self.defaultheader.copy()
         headers["Referer"] = "https://www.pixiv.net/member_illust.php?mode=medium&illust_id={}".format(illust_id)
         illust_detail_url = "https://www.pixiv.net/touch/ajax/illust/details?illust_id={}".format(illust_id)
         illust_detail_html = self.get_response(illust_detail_url,headers)
         orginal_illust_urls = self.get_orginal_illust_urls(illust_detail_html)
+        tags=re.findall('"tag":"([^"]*)"',illust_detail_html.text)
         illust_user_id = re.findall('"user_id":"[^"]*"', illust_detail_html.text)[0].split(':',1)[-1].strip('"')
-        return orginal_illust_urls,headers,illust_user_id
+        return orginal_illust_urls,headers,illust_user_id,tags
 
     def get_orginal_illust_urls(self,illust_detail_html):
         orginal_illust_urls=[]
@@ -147,10 +132,39 @@ class MyPixiv:
                 orginal_illust_urls.append(url) 
         return [url.replace('\\', '').split(':', 1)[-1].strip('"') for url in orginal_illust_urls ] 
 
-if __name__ == '__main__':
-    p=MyPixiv()
+    def save_illust(self,orginal_illust_url,headers,illust_user_id):
+        illust_html=self.get_response(orginal_illust_url,headers,is_byte=True)
+        name="{}_{}".format(illust_user_id,orginal_illust_url.rsplit('/',-1)[-1])
+        folder=self.target_folder
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        file = os.path.join(folder, str(name))
+        with open(file,'wb') as ill:
+            ill.write(illust_html.content)
+        print("Pixiv Illust: [ OK | {} ]".format(file))
+
+    def save_illust_data_by_id(self,illust_id):
+        illust_data= InsertIllust.get_illust_data_by_id(illust_id)
+        SqliteHelper.SqliteHelper().insert_data(data=illust_data)
+
+    def get_illusts_by_user_id(self,user_id):
+        self.target_folder=os.path.join(self.folder,str(user_id))
+        self.illust_id_list = self.get_illust_id_list_by_user_id(user_id)
+        self.check_folder_and_illust()
+        self.multi_get_illust(self.illust_id_list)
+    
+    def get_illust_id_list_by_user_id(self,user_id):
+        user_profile_ajax_url = "https://www.pixiv.net/ajax/user/{}/profile/all".format(str(user_id))
+        page = self.get_response(user_profile_ajax_url,self.defaultheader)
+        _data = re.findall('"[0-9]+":null', page.text)
+        return [str(str(item).split(":")[0]).strip('"') for item in _data if ':null' in str(item)]
+
+if __name__ == "__main__":
     #self.ranking_modes=["daily","weekly","monthly","daily_r18","weekly_r18","male_r18"]
-    p.get_ranking_illust(mode=5)
-    #p.get_illusts_by_user_id(691882)
+    p=MyPixiv()
+    p.get_illusts_by_user_id(177784)
+    #p.get_ranking_illust(mode=1)
+    #p.check_folder_and_illust()
+    #orginal_illust_urls,headers,illust_user_id,tags=p.get_orginal_illust_url_by_id(55387256)
 
 
