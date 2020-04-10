@@ -33,7 +33,7 @@ class MyPixiv:
         urllib3.disable_warnings()
         
     def get_ranking_illust(self,mode=0,illust_num=100):
-        illust_folder=self.now+'_'+self.ranking_modes[self.mode]
+        illust_folder=self.now+'_'+self.ranking_modes[mode]
         self.target_folder = os.path.join(self.root, self.folder,illust_folder)
         for i in range(math.ceil(illust_num/50)):
             self.illust_id_list+=self.get_ranking_illust_id_list(mode=mode,page=i+1)
@@ -162,8 +162,8 @@ class MyPixiv:
 if __name__ == "__main__":
     #self.ranking_modes=["daily","weekly","monthly","daily_r18","weekly_r18","male_r18"]
     p=MyPixiv()
-    p.get_illusts_by_user_id(177784)
-    #p.get_ranking_illust(mode=1)
+    #p.get_illusts_by_user_id(177784)
+    p.get_ranking_illust(mode=3)
     #p.check_folder_and_illust()
     #orginal_illust_urls,headers,illust_user_id,tags=p.get_orginal_illust_url_by_id(55387256)
 
