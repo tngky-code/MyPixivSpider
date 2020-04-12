@@ -1,7 +1,6 @@
 from datetime import datetime
 from lxml import etree
 from queue import Queue
-from tool import InsertIllust
 from tool import SqliteHelper
 import threading
 import requests
@@ -103,10 +102,13 @@ class MyPixiv:
                 break
             illust_id = get_illust_id_queue.get()
             orginal_illust_urls,headers,illust_user_id,tags = self.get_orginal_illust_url_by_id(illust_id)
+            is_filter=0
             for i in self.filer_tags:
                 if str(i.encode("unicode_escape")).strip('b').strip("'").replace('\\\\','\\') in tags:
                     self.save_illust_data_by_id(illust_id)
-                    continue
+                    is_filter=1
+            if is_filter==1:
+                continue
             threads_temp=[]
             for orginal_illust_url in orginal_illust_urls:
                 task = threading.Thread(target=self.save_illust, args=(orginal_illust_url,headers,illust_user_id,))
@@ -124,6 +126,26 @@ class MyPixiv:
         tags=re.findall('"tag":"([^"]*)"',illust_detail_html.text)
         illust_user_id = re.findall('"user_id":"[^"]*"', illust_detail_html.text)[0].split(':',1)[-1].strip('"')
         return orginal_illust_urls,headers,illust_user_id,tags
+
+    def get_illust_data_by_id(self,illust_id):
+        headers = self.defaultheader.copy()
+        headers["Referer"] = "https://www.pixiv.net/member_illust.php?mode=medium&illust_id={}".format(illust_id)
+        illust_detail_url = "https://www.pixiv.net/artworks/{}".format(illust_id)
+        illust_detail_html = self.get_response(illust_detail_url,headers)
+        tags=re.findall('"tag":"([^"]*)"',illust_detail_html.text)
+        illust_data={
+            "illust_id":illust_id,
+            "illust_user_id":int(re.findall('"userId":"([^"]*)"',illust_detail_html.text)[0]),
+            "title":re.findall('"title":"([^"]*)"',illust_detail_html.text)[0],
+            "bookmark_count":re.findall('"bookmarkCount":([^"]*),',illust_detail_html.text)[0],
+            "like_count":re.findall('"likeCount":([^"]*),',illust_detail_html.text)[0],
+            "view_count":re.findall('"viewCount":([^"]*),',illust_detail_html.text)[0],
+            "tags": '_'.join(tags),
+            "illust_status":2,
+            "illust_create_time":str(datetime.now()),
+            "data_create_time":re.findall('"createDate":"([^"]*)"',illust_detail_html.text)[0],
+        }
+        return illust_data    
 
     def get_orginal_illust_urls(self,illust_detail_html):
         orginal_illust_urls=[]
@@ -144,7 +166,7 @@ class MyPixiv:
         print("Pixiv Illust: [ OK | {} ]".format(file))
 
     def save_illust_data_by_id(self,illust_id):
-        illust_data= InsertIllust.get_illust_data_by_id(illust_id)
+        illust_data=self.get_illust_data_by_id(illust_id=illust_id)
         SqliteHelper.SqliteHelper().insert_data(data=illust_data)
 
     def get_illusts_by_user_id(self,user_id):
@@ -163,7 +185,7 @@ if __name__ == "__main__":
     #self.ranking_modes=["daily","weekly","monthly","daily_r18","weekly_r18","male_r18"]
     p=MyPixiv()
     #p.get_illusts_by_user_id(177784)
-    p.get_ranking_illust(mode=3)
+    p.get_ranking_illust(mode=0)
     #p.check_folder_and_illust()
     #orginal_illust_urls,headers,illust_user_id,tags=p.get_orginal_illust_url_by_id(55387256)
 
