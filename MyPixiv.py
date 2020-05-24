@@ -28,7 +28,7 @@ class MyPixiv:
         self.num = 0
         self.now=str(datetime.now()).split(' ')[0]
         self.ranking_modes=["daily","weekly","monthly","daily_r18","weekly_r18","male_r18"]
-        self.filer_tags=["ゲイ","ホモ","巨根","雄っぱい","犬姦","逆フェラ","ふたなり","獣姦","腐向け","妊娠","ケモホモ","妊婦","服越し母乳"]
+        self.filer_tags=[]
         urllib3.disable_warnings()
         
     def get_ranking_illust(self,mode=0,illust_num=100):
@@ -61,7 +61,7 @@ class MyPixiv:
         return r
 
     def check_folder_and_illust(self):
-        loacl_illust_path="D:\MyFiles\Pictures\myillust"
+        loacl_illust_path="D:\MyFiles\Pictures"
         folder = os.path.join(self.root, self.folder)
         existed_file=self.get_local_file_list(folder)+self.get_local_file_list(loacl_illust_path)
         print("Exist Item:", len(existed_file))
@@ -142,8 +142,8 @@ class MyPixiv:
             "view_count":re.findall('"viewCount":([^"]*),',illust_detail_html.text)[0],
             "tags": '_'.join(tags),
             "illust_status":2,
-            "illust_create_time":str(datetime.now()),
-            "data_create_time":re.findall('"createDate":"([^"]*)"',illust_detail_html.text)[0],
+            "illust_create_time":re.findall('"createDate":"([^"]*)"',illust_detail_html.text)[0],
+            "data_create_time":str(datetime.now()),
         }
         return illust_data    
 
@@ -172,6 +172,7 @@ class MyPixiv:
     def get_illusts_by_user_id(self,user_id):
         self.target_folder=os.path.join(self.folder,str(user_id))
         self.illust_id_list = self.get_illust_id_list_by_user_id(user_id)
+        print(self.illust_id_list)
         self.check_folder_and_illust()
         self.multi_get_illust(self.illust_id_list)
     
@@ -184,7 +185,8 @@ class MyPixiv:
 if __name__ == "__main__":
     #self.ranking_modes=["daily","weekly","monthly","daily_r18","weekly_r18","male_r18"]
     p=MyPixiv()
-    #p.get_illusts_by_user_id(177784)
+    #p.get_illusts_by_user_id(310609)
+    #for i in range(6):
     p.get_ranking_illust(mode=0)
     #p.check_folder_and_illust()
     #orginal_illust_urls,headers,illust_user_id,tags=p.get_orginal_illust_url_by_id(55387256)
